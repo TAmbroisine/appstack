@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todofront
+  labels:
+    app: todo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: todo
+      tier: frontend  
+  template:
+    metadata:
+      labels:
+        app: todo
+        tier: frontend
+    spec:
+      containers:
+        - name: todoapp
+          image: ewazme/todo-app:latest
+          ports:
+          - containerPort: 3000
