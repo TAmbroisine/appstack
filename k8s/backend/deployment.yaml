@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: todo
+spec:
+  replicas: 2  # Au moins 2-3 pour rolling update
+  
+  # Stratégie de mise à jour
+  strategy:
+    type: RollingUpdate  # Remplace progressivement les pods
+    rollingUpdate:
+      maxSurge: 1         # Nombre de pods SUPPLÉMENTAIRES pendant mise à jour
+      maxUnavailable: 0   # Pods qui peuvent être DOWN (0 = zéro downtime)
+  
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: ewazme/todo-backend:latest
+        imagePullPolicy: IfNotPresent  # For local development
+        ports:
+        - containerPort: 5000
+        env:
+        - name: INIT_DB
+          value: "true"
+        - name: FLASK_ENV
+          value: "production"
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: database-config
+              key: DB_USER
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: database-config
+              key: DB_HOST
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: database-config
+              key: DB_PORT
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: database-config
+              key: DB_NAME
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: database-secret
+              key: DB_PASSWORD
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
