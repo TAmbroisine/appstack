@@ -7,8 +7,8 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
-// Use environment variable for API URL, fallback to localhost for development
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+// Use runtime API URL from window object (injected by entrypoint), fallback to localhost for development
+const API_URL = window.VITE_API_URL || 'http://localhost:5000';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -68,7 +68,7 @@ function App() {
           className="counter"
           onClick={handleAddTask}
         >
-          Add new task {count}
+          Add new task
         </button>
         <p>
             {tasks.map((task) => (
