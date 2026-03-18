@@ -16,7 +16,7 @@ function App() {
   const [taskInput, setTaskInput] = useState('');
 
   const fetchAPI = async () => {
-    const response = await axios.get(`${API_URL}/api/tasks`);
+    const response = await axios.get(`${API_URL}/tasks`);
     console.log(response.data);
     setTasks(response.data);
   };
@@ -31,7 +31,7 @@ function App() {
     if (taskInput.trim() === '') return;
     
     try {
-      await axios.post(`${API_URL}/api/tasks`, 
+      await axios.post(`${API_URL}/tasks`, 
         { task: taskInput },
         { headers: { 'Content-Type': 'application/json' } }
       );
@@ -77,7 +77,7 @@ function App() {
                   <span>{task.task}</span>
                   <button 
                     onClick={() => {
-                      axios.delete(`${API_URL}/api/tasks/${task.id}`)
+                      axios.delete(`${API_URL}/tasks/${task.id}`)
                         .then(() => fetchAPI())
                         .catch((error) => console.error('Error deleting task:', error));
                     }}
@@ -88,7 +88,6 @@ function App() {
                 </div>
               </>
             ))
-              
             }
         </p>
       </section>
