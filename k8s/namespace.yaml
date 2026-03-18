@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  # Name of the namespace - all your resources go here
+  name: todo
+  
+  # Labels - optional tags for organization
+  labels:
+    # Who owns this namespace
+    owner: development
+    
+    # What app is in this namespace
+    app: todo-app
+    
+    # Environment (dev/staging/prod)
+    environment: development
+  
+  # Annotations - optional metadata/documentation
+  annotations:
+    # Description of this namespace
+    description: "Namespace for todo application (frontend + backend + database)"
+    
+    # Who manages it
+    managed-by: "engineering-team"
