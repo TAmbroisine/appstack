@@ -1,11 +1,50 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
+import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
+// Use environment variable for API URL, fallback to localhost for development
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 function App() {
   const [count, setCount] = useState(0)
+  const [tasks, setTasks] = useState([]);
+  const [taskInput, setTaskInput] = useState('');
+
+  const fetchAPI = async () => {
+    const response = await axios.get(`${API_URL}/api/tasks`);
+    console.log(response.data);
+    setTasks(response.data);
+  };
+
+  const handleTaskChange = (e) => {
+  setTaskInput(e.target.value);
+  e.target.style.height = 'auto';
+  e.target.style.height = e.target.scrollHeight + 'px';
+  };
+
+  const handleAddTask = async () => {
+    if (taskInput.trim() === '') return;
+    
+    try {
+      await axios.post(`${API_URL}/api/tasks`, 
+        { task: taskInput },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      setTaskInput(''); // Clear input
+      fetchAPI(); // Refresh tasks list
+    } catch (error) {
+      console.error('Error adding task:', error);
+    }
+};
+
+  useEffect(() => {
+    fetchAPI();
+  }, []);
 
   return (
     <>
@@ -16,101 +55,45 @@ function App() {
           <img src={viteLogo} className="vite" alt="Vite logo" />
         </div>
         <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
+          <h1>My tasks</h1>
         </div>
+        <label for="task">New Task:</label>
+        <textarea 
+          id="task" 
+          name="task"
+          value={taskInput}
+          onChange={(e) => setTaskInput(e.target.value)}
+          style={{ resize: 'none', overflow: 'hidden', minHeight: '80px' }}> </textarea>
         <button
           className="counter"
-          onClick={() => setCount((count) => count + 1)}
+          onClick={handleAddTask}
         >
-          Count is {count}
+          Add new task {count}
         </button>
+        <p>
+            {tasks.map((task) => (
+              <>
+                <div key={task.id}>
+                  <span>{task.task}</span>
+                  <button 
+                    onClick={() => {
+                      axios.delete(`${API_URL}/api/tasks/${task.id}`)
+                        .then(() => fetchAPI())
+                        .catch((error) => console.error('Error deleting task:', error));
+                    }}
+                    style={{ backgroundColor: '#ff4444', color: 'white', border: 'none', cursor: 'pointer', padding: '8px 12px', borderRadius: '4px', fontSize: '16px', marginLeft: '16px' }}
+                  ><FontAwesomeIcon icon={faTrash} /></button>
+                  <br>
+                  </br>
+                </div>
+              </>
+            ))
+              
+            }
+        </p>
       </section>
 
       <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
 
       <div className="ticks"></div>
       <section id="spacer"></section>

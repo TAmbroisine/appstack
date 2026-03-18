@@ -182,3 +182,9 @@
     border-right-color: var(--border);
   }
 }
+
+textarea {
+  resize: both;
+  min-height: 80px;
+  width: 300px;
+}
