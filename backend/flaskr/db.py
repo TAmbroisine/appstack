@@ -37,37 +37,51 @@ def close_db(e=None):
 def init_db():
     """Initialize database with schema"""
     db = get_db()
+    db_url = current_app.config['SQLALCHEMY_DATABASE_URI']
     
     # Read schema
     with current_app.open_resource('schema.sql') as f:
         schema = f.read().decode('utf8')
     
-    db_url = current_app.config['SQLALCHEMY_DATABASE_URI']
-    
     if db_url.startswith('sqlite'):
-        # SQLite - execute directly
-        conn = sqlite3.connect(db_url.replace('sqlite:///', ''))
-        conn.executescript(schema)
-        conn.commit()
-        conn.close()
+        # SQLite - execute directly using sqlite3
+        db_path = db_url.replace('sqlite:///', '')
+        conn = sqlite3.connect(db_path)
+        try:
+            conn.executescript(schema)
+            conn.commit()
+        finally:
+            conn.close()
     else:
-        # PostgreSQL - convert schema to PostgreSQL syntax
-        schema_pg = schema.replace('AUTOINCREMENT', '')
+        # PostgreSQL - convert SQLite schema to PostgreSQL syntax
+        # Replace INTEGER PRIMARY KEY with SERIAL for auto-increment
+        schema_pg = schema.replace('INTEGER PRIMARY KEY', 'SERIAL PRIMARY KEY')
+        
+        # Split statements and execute each one
         statements = schema_pg.split(';')
         for statement in statements:
-            if statement.strip():
-                db.execute(text(statement))
+            stmt = statement.strip()
+            if stmt:  # Only execute non-empty statements
+                try:
+                    db.execute(text(stmt))
+                except Exception as e:
+                    print(f"Warning executing statement: {e}")
+        
         db.commit()
 
 
 @click.command('init-db')
 def init_db_command():
     """Clear the existing data and create new tables."""
-    init_db()
-    click.echo('Initialized the database.')
+    try:
+        init_db()
+        click.echo('Initialized the database.')
+    except Exception as e:
+        click.echo(f'Error initializing database: {e}', err=True)
 
 
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
+
 
