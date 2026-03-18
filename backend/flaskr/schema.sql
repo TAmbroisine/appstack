@@ -2,5 +2,11 @@ DROP TABLE IF EXISTS tasks;
 
 CREATE TABLE tasks (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	task TEXT NOT NULL
+	task TEXT NOT NULL,
+	created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO tasks (task) VALUES ('test1');
+INSERT INTO tasks (task) VALUES ('test2');
+INSERT INTO tasks (task) VALUES ('test3');
+INSERT INTO tasks (task) VALUES ('test4');
