@@ -3,6 +3,7 @@ import functools
 from flask import (
         Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
+from sqlalchemy import text
 
 from flaskr.db import get_db
 
@@ -24,16 +25,17 @@ def tasks_list():
         else:
             db = get_db()
             db.execute(
-                    'INSERT INTO tasks (task) VALUES (?)',
-                    (task,)
+                text('INSERT INTO tasks (task) VALUES (:task)'),
+                {'task': task}
             )
             db.commit()
             return {'success': True}
     elif request.method == 'GET':
-        tasks = get_db().execute(
-            'SELECT id, task, created FROM tasks ORDER BY created DESC'
+        result = get_db().execute(
+            text('SELECT id, task, created FROM tasks ORDER BY created DESC')
         ).fetchall()
-        return [dict(task) for task in tasks]
+        # Convert Row objects to dictionaries
+        return [{'id': row[0], 'task': row[1], 'created': row[2]} for row in result]
     else:
         return {'error': 'Method not allowed'}, 405
 
@@ -49,8 +51,8 @@ def delete_task(task_id):
     else:
         db = get_db()
         db.execute(
-                'DELETE FROM tasks WHERE id = ?',
-                (task_id,)
+            text('DELETE FROM tasks WHERE id = :id'),
+            {'id': task_id}
         )
         db.commit()
         return {'success': True}
