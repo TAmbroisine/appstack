@@ -7,9 +7,24 @@ def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     CORS(app, resources={r"/api/*": {"origins": "*", "methods": ["GET", "POST", "DELETE", "OPTIONS"]}})
+    
+    # Database configuration from environment variables
+    db_user = os.getenv('DB_USER', 'postgres')
+    db_password = os.getenv('DB_PASSWORD', 'postgres')
+    db_host = os.getenv('DB_HOST', 'localhost')
+    db_port = os.getenv('DB_PORT', '5432')
+    db_name = os.getenv('DB_NAME', 'tododb')
+    
+    # Use SQLite for local testing if DB_HOST is not set
+    if os.getenv('DB_HOST'):
+        database_url = f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
+    else:
+        database_url = f'sqlite:///{os.path.join(app.instance_path, "flaskr.sqlite")}'
+    
     app.config.from_mapping(
             SECRET_KEY='dev',
-            DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+            DATABASE=database_url,
+            SQLALCHEMY_DATABASE_URI=database_url,
     )
 
     if test_config is None:
