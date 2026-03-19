@@ -17,8 +17,8 @@ Le projet met l'accent sur la séparation des responsabilités, la configuration
 ## Ce que ce projet démontre
 
 - Conception d'une architecture 3-tiers maintenable
-- Developpement d'une API REST (GET/POST/DELETE)
-- Integration frontend/backend avec gestion de la configuration runtime
+- Développement d'une API REST (GET/POST/DELETE)
+- Intégration frontend/backend avec gestion de la configuration runtime
 - Conteneurisation Docker de chaque composant
 - Déploiement Kubernetes (Deployment, StatefulSet, Service, Ingress)
 - Bonnes pratiques d'exploitation: probes, ressources, rolling update
