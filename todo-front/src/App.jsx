@@ -7,8 +7,8 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
-// Use runtime API URL from window object (injected by entrypoint), fallback to localhost for development
-const API_URL = window.VITE_API_URL || 'http://localhost:5000';
+// Use runtime API origin from window object; default to same-origin behind the ingress.
+const API_URL = window.VITE_API_URL || '';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -16,7 +16,7 @@ function App() {
   const [taskInput, setTaskInput] = useState('');
 
   const fetchAPI = async () => {
-    const response = await axios.get(`${API_URL}/tasks`);
+    const response = await axios.get(`${API_URL}/api/tasks`);
     console.log(response.data);
     setTasks(response.data);
   };
@@ -31,7 +31,7 @@ function App() {
     if (taskInput.trim() === '') return;
     
     try {
-      await axios.post(`${API_URL}/tasks`, 
+      await axios.post(`${API_URL}/api/tasks`, 
         { task: taskInput },
         { headers: { 'Content-Type': 'application/json' } }
       );
@@ -77,7 +77,7 @@ function App() {
                   <span>{task.task}</span>
                   <button 
                     onClick={() => {
-                      axios.delete(`${API_URL}/tasks/${task.id}`)
+                      axios.delete(`${API_URL}/api/tasks/${task.id}`)
                         .then(() => fetchAPI())
                         .catch((error) => console.error('Error deleting task:', error));
                     }}

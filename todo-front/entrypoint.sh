@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-# Use provided VITE_API_URL or default to backend-service for Kubernetes
-API_URL="${VITE_API_URL:-http://backend-service:5000}"
+# Use provided VITE_API_URL or default to same-origin behind the ingress.
+API_URL="${VITE_API_URL:-}"
 
 echo "Setting API URL to: $API_URL"
 
