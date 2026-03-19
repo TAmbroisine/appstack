@@ -6,7 +6,7 @@ Ce repository est principalement destine a un usage portfolio/recrutement pour m
 
 ## Objectif du projet
 
-Concevoir et deployer une application simple mais realiste selon une architecture 3-tiers:
+Concevoir et déployer une application simple mais réaliste selon une architecture 3-tiers:
 
 1. Frontend: interface utilisateur en React/Vite
 2. Backend: API REST en Flask
