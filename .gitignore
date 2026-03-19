@@ -16,3 +16,4 @@ k8s/README_EXPLAINED.md
 k8s/DEPLOYMENT_EXPLAINED.yaml
 kubectl
 kubectl.sha256
+flask-tutorial/
