@@ -54,7 +54,7 @@ Frontend (React)        Backend (Flask)
 - `k8s/`: manifests Kubernetes (frontend, backend, database, ingress, namespace)
 - `docker-compose.yml`: orchestration locale rapide des services
 
-## Fonctionnalites implementees
+## Fonctionnalités implementées
 
 - Consultation de la liste des taches
 - Ajout d'une nouvelle tache
@@ -74,20 +74,20 @@ Lancer les services:
 docker compose up -d
 ```
 
-Acces:
+Accès:
 
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:5000/api/tasks
 
-Arreter:
+Arrêter:
 
 ```bash
 docker compose down
 ```
 
-## Deploiement Kubernetes
+## Déploiement Kubernetes
 
-Les manifests sont organises dans `k8s/`:
+Les manifests sont organisés dans `k8s/`:
 
 - `k8s/namespace.yaml`
 - `k8s/database/`
@@ -117,13 +117,13 @@ kubectl get ingress -n todo
 
 Un blocage CORS apparent est survenu en cluster. La cause était un appel frontend vers un DNS interne Kubernetes (`backend-service`) non resolvable depuis le navigateur.
 
-Correction appliquee:
+Correction appliquée:
 
 - Passage a un routage same-origin via Ingress
 - Consommation API via `/api/...` depuis le frontend
 - Alignement des routes Ingress (`/api` vers backend)
 
-## Competences mobilisees
+## Competences mobilisées
 
 - Architecture applicative 3-tiers
 - API REST et integration full-stack
@@ -131,7 +131,7 @@ Correction appliquee:
 - Kubernetes: Deployments, StatefulSet, Services, Ingress
 - Troubleshooting reseau applicatif et fiabilisation production
 
-## Ameliorations envisagees
+## Améliorations envisagées
 
 - Ajout d'authentification (JWT/OAuth)
 - Pipeline CI/CD (tests + build + deploy)
