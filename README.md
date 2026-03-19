@@ -1,8 +1,8 @@
 # Application 3-Tiers - React, Flask, PostgreSQL, Kubernetes
 
-Projet de démonstration d'une application web full-stack de gestion de taches, concue pour illustrer une demarche complete: developpement, conteneurisation, orchestration Kubernetes et diagnostic d'incident en production.
+Projet de démonstration d'une application web full-stack de gestion de taches, concue pour illustrer une démarche complète: développement, conteneurisation, orchestration Kubernetes et diagnostic d'incident en production.
 
-Ce repository est principalement destine a un usage portfolio/recrutement pour montrer des competences concretes en architecture applicative et en DevOps.
+Ce repository est principalement destiné à un usage portfolio/recrutement pour montrer des compétences concrètes en architecture applicative et en DevOps.
 
 ## Objectif du projet
 
