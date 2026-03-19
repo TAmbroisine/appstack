@@ -12,23 +12,23 @@ Concevoir et deployer une application simple mais realiste selon une architectur
 2. Backend: API REST en Flask
 3. Data layer: base PostgreSQL persistante
 
-Le projet met l'accent sur la separation des responsabilites, la configuration par environnement et la robustesse du deploiement.
+Le projet met l'accent sur la séparation des responsabilités, la configuration par environnement et la robustesse du deploiement.
 
-## Ce que ce projet demontre
+## Ce que ce projet démontre
 
 - Conception d'une architecture 3-tiers maintenable
 - Developpement d'une API REST (GET/POST/DELETE)
 - Integration frontend/backend avec gestion de la configuration runtime
 - Conteneurisation Docker de chaque composant
-- Deploiement Kubernetes (Deployment, StatefulSet, Service, Ingress)
+- Déploiement Kubernetes (Deployment, StatefulSet, Service, Ingress)
 - Bonnes pratiques d'exploitation: probes, ressources, rolling update
-- Diagnostic et correction d'un incident reseau/CORS en environnement cluster
+- Diagnostic et correction d'un incident réseau/CORS en environnement cluster
 
 ## Stack technique
 
 - Frontend: React, Vite, Axios
 - Backend: Python, Flask, SQLAlchemy, Flask-CORS
-- Base de donnees: PostgreSQL 16
+- Base de données: PostgreSQL 16
 - Conteneurisation: Docker, Docker Compose
 - Orchestration: Kubernetes (manifests YAML)
 
@@ -50,7 +50,7 @@ Frontend (React)        Backend (Flask)
 ## Structure du repository
 
 - `todo-front/`: application frontend React/Vite
-- `backend/`: API Flask et acces base de donnees
+- `backend/`: API Flask et acces base de données
 - `k8s/`: manifests Kubernetes (frontend, backend, database, ingress, namespace)
 - `docker-compose.yml`: orchestration locale rapide des services
 
@@ -95,7 +95,7 @@ Les manifests sont organises dans `k8s/`:
 - `k8s/frontend/`
 - `k8s/ingress.yaml`
 
-Sequence type:
+Séquence type:
 
 ```bash
 kubectl apply -f k8s/namespace.yaml
@@ -105,7 +105,7 @@ kubectl apply -f k8s/frontend
 kubectl apply -f k8s/ingress.yaml
 ```
 
-Verification:
+Vérification:
 
 ```bash
 kubectl get pods -n todo
@@ -115,7 +115,7 @@ kubectl get ingress -n todo
 
 ## Point technique notable: incident CORS
 
-Un blocage CORS apparent est survenu en cluster. La cause etait un appel frontend vers un DNS interne Kubernetes (`backend-service`) non resolvable depuis le navigateur.
+Un blocage CORS apparent est survenu en cluster. La cause était un appel frontend vers un DNS interne Kubernetes (`backend-service`) non resolvable depuis le navigateur.
 
 Correction appliquee:
 
@@ -127,7 +127,7 @@ Correction appliquee:
 
 - Architecture applicative 3-tiers
 - API REST et integration full-stack
-- Docker et cycle de build/deploiement
+- Docker et cycle de build/déploiement
 - Kubernetes: Deployments, StatefulSet, Services, Ingress
 - Troubleshooting reseau applicatif et fiabilisation production
 
@@ -137,8 +137,8 @@ Correction appliquee:
 - Pipeline CI/CD (tests + build + deploy)
 - Monitoring/observabilite (Prometheus/Grafana)
 - Gestion HTTPS et certificats
-- Tests automatises frontend/backend plus complets
+- Tests automatisés frontend/backend plus complets
 
 ## Auteur
 
-Projet realise par Tyron dans une logique de portfolio technique.
+Projet réalisé par Tyron dans une logique de portfolio technique.
